@@ -6,17 +6,15 @@ using System.Threading.Tasks;
 
 namespace ConsoleApplication13
 {
-
-
     class Product
     {
-        public int ID, price, UIS;
+        public int ID, price, UnitsInStock;
         public string Name;
         public Product(int ID, int price, int UIS, string Name)
         {
             this.ID = ID;
             this.price = price;
-            this.UIS = UIS;
+            this.UnitsInStock = UIS;
             this.Name = Name;
         }
 
@@ -38,11 +36,11 @@ namespace ConsoleApplication13
             public Product product;
             public Customer customer;
 
-            public Order(int ID, DateTime Date, Customer custom, Product Name) 
+            public Order(int ID, DateTime Date, Customer customer, Product Name) 
             {
                 this.ID = ID;
                 this.Date = Date;
-                this.customer = custom;
+                this.customer = customer;
                 this.product = Name;        
             }
         }
@@ -50,89 +48,77 @@ namespace ConsoleApplication13
 
         static void Main(string[] args)
         {
-            List<Product> product = new List<Product>();
-            List<Customer> customer = new List<Customer>();
-            List<Order> order = new List<Order>();
+            List<Product> products = new List<Product>();
+            List<Customer> customers = new List<Customer>();
+            List<Order> orders = new List<Order>();
 
-            product.Add(new Product(1, 1000, 6, "Mobile"));
-            product.Add(new Product(2, 20, 0, "Watch"));
-            product.Add(new Product(3, 3000, 8, "Purse"));
-            product.Add(new Product(4, 40, 9, "Perfume"));
-            product.Add(new Product(5, 5000, 0, "Shoes"));
+            products.Add(new Product(1, 1000, 6, "Mobile"));
+            products.Add(new Product(2, 20, 0, "Watch"));
+            products.Add(new Product(3, 3000, 8, "Purse"));
+            products.Add(new Product(4, 40, 9, "Perfume"));
+            products.Add(new Product(5, 5000, 0, "Shoes"));
 
-            customer.Add(new Customer(1, "Priyu"));
-            customer.Add(new Customer(2, "Shivu"));
-            customer.Add(new Customer(3, "Sandy"));
-            customer.Add(new Customer(4, "Shravs"));
-            customer.Add(new Customer(5, "Sushma"));
+            customers.Add(new Customer(1, "Priyu"));
+            customers.Add(new Customer(2, "Shivu"));
+            customers.Add(new Customer(3, "Sandy"));
+            customers.Add(new Customer(4, "Shravs"));
+            customers.Add(new Customer(5, "Sushma"));
 
-            order.Add(new Order(1, Convert.ToDateTime("1/1/2017"), customer[0],product[0]));
-            order.Add(new Order(2, Convert.ToDateTime("2/1/2017"), customer[1], product[1]));
-            order.Add(new Order(3, Convert.ToDateTime("3/1/2017"), customer[0], product[2]));
-            order.Add(new Order(4, Convert.ToDateTime("4/1/2017"), customer[1], product[3]));
-            order.Add(new Order(5, Convert.ToDateTime("5/2/2017"), customer[2], product[4]));
+            orders.Add(new Order(1, Convert.ToDateTime("1/1/2017"), customers[0],products[0]));
+            orders.Add(new Order(2, Convert.ToDateTime("2/1/2017"), customers[1], products[1]));
+            orders.Add(new Order(3, Convert.ToDateTime("3/1/2017"), customers[0], products[2]));
+            orders.Add(new Order(4, Convert.ToDateTime("4/1/2017"), customers[1], products[3]));
+            orders.Add(new Order(5, Convert.ToDateTime("5/2/2017"), customers[2], products[4]));
             
-            var result = from item in product
-                         where item.UIS > 0
+            var ProductsinStock = from item in products
+                         where item.UnitsInStock > 0
                          where item.price > 100
                          select item.Name;
                          
 
-            foreach (var item in result)
+            foreach (var item in ProductsinStock)
             {
               Console.WriteLine("{0} is in stock", item);
                 
             }
-            var result1 = from orders in order
-                              group orders by orders.customer.ID into CG
+            var customerNames = from order in orders
+                              group order by order.customer.ID into CustomerGroup
                               select new
                               {
-                                  value = CG.Sum(index => index.product.price),
-                                  key = CG.Key
+                                  value = CustomerGroup.Sum(index => index.product.price),
+                                  key = CustomerGroup.Key
                               };
-                              foreach (var item in result1)
+                              foreach (var item in customerNames)
                               {
                                  Console.WriteLine(item);
 
                               }
 
-            var result2 =      from orders in order
-                               group orders by orders.product.ID into CG
+            var product =      from order in orders
+                               group order by order.product.ID into CustomerGroup
                                select new
                                {
-                                   value = CG.Count(),
-                                   key = CG.Key
+                                   value = CustomerGroup.Count(),
+                                   key = CustomerGroup.Key
 
                                };
-                                foreach (var item in result2)
+                                foreach (var item in product)
                                 {
                                     Console.WriteLine(item);
 
                                 }
-                     var last = from orders in order
-                       group orders by orders.product.ID into CG
-                       select new
-                       {
-                           value = CG.Count(),
-                           key = CG.Key
-                       };
+            var numberOfItems =          from order in orders
+                                group order by order.product.ID into ProductGroup
+                                select new
+                                {
+                                value = ProductGroup.Count(),
+                                key = ProductGroup.Key
+                                };
 
             Console.WriteLine("Product Name with the number of times it was bought!");
-            foreach (var k in last)
-                Console.WriteLine(k);
-
-
-
-
-
-
-
-
-
-
-
-
-            Console.ReadKey();
+            foreach (var element in numberOfItems)
+                Console.WriteLine(element);
+                Console.ReadKey();
 
             }
         }
