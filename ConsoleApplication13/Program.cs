@@ -10,11 +10,11 @@ namespace ConsoleApplication13
     {
         public int ID, price, UnitsInStock;
         public string Name;
-        public Product(int ID, int price, int UIS, string Name)
+        public Product(int ID, int price, int unitsInStock, string Name)
         {
             this.ID = ID;
             this.price = price;
-            this.UnitsInStock = UIS;
+            this.UnitsInStock = unitsInStock;
             this.Name = Name;
         }
 
