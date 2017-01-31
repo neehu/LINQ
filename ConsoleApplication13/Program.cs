@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication13
+namespace LINQQUERY
 {
     class Product
     {
@@ -73,9 +73,7 @@ namespace ConsoleApplication13
             var ProductsinStock = from item in products
                          where item.UnitsInStock > 0
                          where item.price > 100
-                         select item.Name;
-                         
-
+                         select item.Name;                         
             foreach (var item in ProductsinStock)
             {
               Console.WriteLine("{0} is in stock", item);
@@ -119,7 +117,6 @@ namespace ConsoleApplication13
             foreach (var element in numberOfItems)
                 Console.WriteLine(element);
                 Console.ReadKey();
-
             }
         }
     }
