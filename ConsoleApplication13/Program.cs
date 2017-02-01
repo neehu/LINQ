@@ -76,25 +76,21 @@ class Product
                             {
                               Console.WriteLine("{0} is in stock", item);                
                             }
-        var customerNames = from order in orders
-                            group order by order.customer.identity into CustomerGroup
-                            select new
-                            {
-                                value = CustomerGroup.Sum(index => index.product.price),
-                                key = CustomerGroup.Key,
-                                
-                            };
-                            foreach (var item in customerNames)
-                            {
-                                Console.WriteLine(item);
 
-                            }
-
+            var customerNames = from order in orders
+                                group order by order.customer.identity into CustomerGroup
+                                select new
+                                {
+                                    sum = CustomerGroup.Sum(index => index.product.price),
+                                    key = CustomerGroup.Key,
+                                                                                                                                       
+                                };
+                                                                                   
         var product =      from order in orders
                             group order by order.product.ID into ProductGroup
                             select new
                             {
-                                value = ProductGroup.Count(),
+                                totalNumber = ProductGroup.Count(),
                                 key = ProductGroup.Key
 
                             };
@@ -105,7 +101,7 @@ class Product
                             }
 
         var groupedOrders=  from order in orders
-                            where DateTime.Compare(order.Date, DateTime.Now.AddMonths(-1)) > 0
+                            where DateTime.Compare(order.Date, DateTime.Now.AddDays(-31)) > 0
                             select order.customer.Name;
 
 
