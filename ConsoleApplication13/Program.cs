@@ -51,10 +51,10 @@ class Product
         List<Order> orders = new List<Order>();
 
         products.Add(new Product(1, 1000, 6, "Mobile"));
-        products.Add(new Product(2, 20, 0, "Watch"));
-        products.Add(new Product(3, 3000, 8, "Purse"));
+        products.Add(new Product(2, 20, 0, "TV"));
+        products.Add(new Product(3, 3000, 8, "Watch"));
         products.Add(new Product(4, 40, 9, "Perfume"));
-        products.Add(new Product(5, 5000, 0, "Shoes"));
+        products.Add(new Product(5, 5000, 0, "WristBands"));
 
         customers.Add(new Customer(1, "Priyu"));
         customers.Add(new Customer(2, "Shivu"));
@@ -81,7 +81,8 @@ class Product
                             select new
                             {
                                 value = CustomerGroup.Sum(index => index.product.price),
-                                key = CustomerGroup.Key
+                                key = CustomerGroup.Key,
+                                
                             };
                             foreach (var item in customerNames)
                             {
