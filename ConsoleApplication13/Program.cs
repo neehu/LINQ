@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LINQ
+namespace LINQuery
 {
 class Product
 {
@@ -69,13 +69,13 @@ class Product
         orders.Add(new Order(5, Convert.ToDateTime("5/2/2017"), customers[2], products[4]));
             
         var ProductsinStock = from item in products
-                            where item.UnitsInStock > 0
-                            where item.price > 100
-                            select item.Name;                         
-                            foreach (var item in ProductsinStock)
-                            {
+                              where item.UnitsInStock > 0
+                              where item.price > 100
+                              select item.Name;                         
+                              foreach (var item in ProductsinStock)
+                              {
                               Console.WriteLine("{0} is in stock", item);                
-                            }
+                              }
 
          var customerNames =  from order in orders
                               group order by order.customer.customerId into CustomerGroup
@@ -83,9 +83,16 @@ class Product
                               {
                                 sum = CustomerGroup.Sum(index => index.product.price),
                                 key = CustomerGroup.Key,                                                                                                                                       
-                                };
-                                                                                   
-        var product =       from order in orders
+                              };
+                               Console.WriteLine("Expenditure of customers in order");                           
+                               foreach (var element in customerNames)
+                               {
+                                    Console.WriteLine(element);
+                               }
+
+
+
+            var product =   from order in orders
                             group order by order.product.productId into ProductGroup
                             select new
                             {
@@ -93,6 +100,7 @@ class Product
                                 key = ProductGroup.Key
 
                             };
+                            Console.WriteLine("Number of times a product was bought");
                             foreach (var item in product)
                             {
                                 Console.WriteLine(item);
@@ -102,26 +110,11 @@ class Product
                             where DateTime.Compare(order.Date, DateTime.Now.AddDays(-31)) > 0
                             select order.customer.customerName;
 
-
-                            Console.WriteLine("Customer who bought a product in the last month:");
+                            Console.WriteLine("Customers who bought a Product in last month");
                             foreach (var element in groupedOrders)
                             {
                             Console.WriteLine(element);
-                            }
-
-
-   var numberOfItems =      from order in orders
-                            group order by order.product.productId into ProductGroup
-                            select new
-                            {
-                            value = ProductGroup.Count(),
-                            key = ProductGroup.Key
-                            };
-
-                            Console.WriteLine("Product Name with the number of times it was bought!");
-                            foreach (var element in numberOfItems)
-                            Console.WriteLine(element);
-                            Console.ReadKey();
+                            }                            
         }
     }
 }
