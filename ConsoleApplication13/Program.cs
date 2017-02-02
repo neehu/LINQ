@@ -6,11 +6,11 @@ namespace LINQ
 {
 class Product
 {
-    public int ID, price, UnitsInStock;
+    public int productId, price, UnitsInStock;
     public string Name;
-    public Product(int ID, int price, int unitsInStock, string Name)
+    public Product(int productId, int price, int unitsInStock, string Name)
     {
-        this.ID = ID;
+        this.productId = productId;
         this.price = price;
         this.UnitsInStock = unitsInStock;
         this.Name = Name;
@@ -18,25 +18,25 @@ class Product
 
     class Customer
     {
-        public int identity;
-        public string Name;
-        public Customer(int ID, string Name)
+        public int customerId;
+        public string customerName;
+        public Customer(int customerId, string Name)
         {
-            this.identity = ID;
-            this.Name = Name;
+            this.customerId = customerId;
+            this.customerName = Name;
         }
     }
 
     class Order
     {
-        public int Identity;
+        public int orderId;
         public DateTime Date;            
         public Product product;
         public Customer customer;
 
-        public Order(int ID, DateTime Date, Customer customer, Product Name) 
+        public Order(int orderId, DateTime Date, Customer customer, Product Name) 
         {
-            this.Identity = ID;
+            this.orderId = orderId;
             this.Date = Date;
             this.customer = customer;
             this.product = Name;        
@@ -77,17 +77,16 @@ class Product
                               Console.WriteLine("{0} is in stock", item);                
                             }
 
-            var customerNames = from order in orders
-                                group order by order.customer.identity into CustomerGroup
-                                select new
-                                {
-                                    sum = CustomerGroup.Sum(index => index.product.price),
-                                    key = CustomerGroup.Key,
-                                                                                                                                       
+         var customerNames =  from order in orders
+                              group order by order.customer.customerId into CustomerGroup
+                              select new
+                              {
+                                sum = CustomerGroup.Sum(index => index.product.price),
+                                key = CustomerGroup.Key,                                                                                                                                       
                                 };
                                                                                    
-        var product =      from order in orders
-                            group order by order.product.ID into ProductGroup
+        var product =       from order in orders
+                            group order by order.product.productId into ProductGroup
                             select new
                             {
                                 totalNumber = ProductGroup.Count(),
@@ -97,12 +96,11 @@ class Product
                             foreach (var item in product)
                             {
                                 Console.WriteLine(item);
-
                             }
 
-        var groupedOrders=  from order in orders
+    var groupedOrders =      from order in orders
                             where DateTime.Compare(order.Date, DateTime.Now.AddDays(-31)) > 0
-                            select order.customer.Name;
+                            select order.customer.customerName;
 
 
                             Console.WriteLine("Customer who bought a product in the last month:");
@@ -113,7 +111,7 @@ class Product
 
 
    var numberOfItems =      from order in orders
-                            group order by order.product.ID into ProductGroup
+                            group order by order.product.productId into ProductGroup
                             select new
                             {
                             value = ProductGroup.Count(),
